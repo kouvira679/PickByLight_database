@@ -35,15 +35,27 @@ if __name__ == "__main__":
         print("var =", var3.get_value())
 
         #doing a write test
-        # var1.set_value(True)
-        # var2.set_value(100)
-        # var3.set_value([1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8])
-
         write_tage(client, 'ns=3;s="OPCUA_data"."var1"', True)
         write_tage(client, 'ns=3;s="OPCUA_data"."var2"', 100)
         write_tage(client, 'ns=3;s="OPCUA_data"."var3"', [1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8])
 
         print("new values written to plc ")
+        
+        
+        
+        while True: 
+            # read rfid tag data from plc
+            rfid_value = rfid_value.get_value()
+            print("Current RFID value: ", rfid_value)
+            
+            #process data in python
+            processed = process_rfid(rfid_value)
+            
+            #send value back to plc
+            result_node.set_value(processed)
+            print("sent back: ", processed)
+            
+            time.sleep()
 
 
         # create the subhandler and subscription
